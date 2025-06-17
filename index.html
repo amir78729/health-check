@@ -144,7 +144,7 @@
           text: `I'm hearing explosions. I think it's starting.`,
         },
         {
-          time: new Date("2025/6/14"),
+          time: new Date("2025/6/14 23:38"),
           text: `I'm alive. Sounds are scary but everything is fine.`
         },
         {
@@ -169,7 +169,7 @@
       const logsSection = document.getElementById("logs");
       const locationSection = document.getElementById("location");
 
-      headerSection.innerHTML = `<a id="avatar" aria-label="Amirhossein" target="_blank" href="${URL}"><img src="./image.jpg" alt="${NAME}'s picture" /></a>'s Health Check`;
+      headerSection.innerHTML = `<a id="avatar" aria-label="${NAME}" target="_blank" href="${URL}"><img src="./image.jpg" alt="${NAME}'s picture" /></a>'s Health Check`;
       locationSection.innerText = CURRENT_LOCATION;
 
       const dateOption = {
