@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Check</title>
+    <style>
+      html {
+        line-height: 2rem;
+        font-size: 0.9rem;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: monospace;
+        background: #000;
+        color: #fff;
+        width: 90%;
+        height: 100dvh;
+        margin: 0 auto;
+        max-width: 30rem;
+        padding-top: 5rem;
+        position: relative;
+      }
+      body::after {
+        content: "";
+        height: 20dvh;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        background: linear-gradient(to top, black, transparent);
+      }
+
+      ul {
+        list-style-type: ">";
+        padding-left: 1rem;
+        padding-bottom: 20dvh;
+      }
+      li {
+        padding-left: 1rem;
+        color: rgb(51, 194, 60);
+        margin-top: 2.5rem;
+        line-height: 1.5;
+      }
+      .date {
+        color: #aaa;
+        font-size: 0.8rem;
+      }
+      #location {
+        margin: 0;
+      }
+      h1 {
+        display: flex;
+        align-items: center;
+      }
+      #avatar {
+        display: inline;
+      }
+      #avatar, #avatar img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+      }
+      .location-container {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .blue-dot {
+        background-color: #1589ee;
+        border: 1px solid white;
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        position: relative;
+      }
+      .blue-dot::before {
+        content: '';
+        position: absolute;
+        background-color: inherit;
+        width: 0.75rem;
+        height: 0.75rem;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1);
+        border-radius: 50%;
+        animation: blue-dot-animation 2s ease-out infinite;
+        z-index: -1;
+      }
+      .blue-dot::after {
+        content: '';
+        position: absolute;
+        background-color: inherit;
+        width: 0.75rem;
+        height: 0.75rem;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1);
+        border-radius: 50%;
+        animation: blue-dot-animation 2s 0.5s ease-out infinite;
+        z-index: -1;
+      }
+      @keyframes blue-dot-animation {
+        from {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.5;
+        }
+        to {
+          transform: translate(-50%, -50%) scale(5);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 id="title"></h1>
+      <div class="location-container" aria-label="last known location">
+        <span class="blue-dot"></span>
+        <span id="location"></span>
+      </div>
+      <p>
+        This page tracks my health status during the current conflict. I'll
+        maintain regular updates to keep my friends informed of my well-being. I
+        sincerely hope for peace to return soon, making this page unnecessary. 
+        Take care! 🕊️
+      </p>
+      <ul id="logs"></ul>
+    </main>
+    <script>
+      const Locations = {
+        Tehran: "Tehran",
+      }
+      const NAME = "Amirhossein";
+      const URL = "https://amirhosseinalibakhshi.com";
+      const CURRENT_LOCATION = Locations.Tehran
+
+      const logs = [
+        {
+          time: new Date("2025/6/13 02:23"),
+          text: `I'm hearing explosion sounds. I think it begins...`,
+        },
+        {
+          time: new Date("2025/6/14"),
+          text: `I'm alive. Sounds are scary but everything is fine.`
+        },
+        {
+          time: new Date("2025/6/15 3:54"),
+          text: `I'm alive and TIRED.`
+        },
+        {
+          time: new Date("2025/6/16 16:34"),
+          text: `It's queit. I'm alive. The city is almost empty.`
+        },
+        {
+          time: new Date("2025/6/17 6:32"),
+          text: `It's about 6:00. I just woke up because of the sound of the  💥 and I'm alive. I'm going to sleep again. It was close.`
+        },
+      ];
+
+      const headerSection = document.getElementById("title");
+      const logsSection = document.getElementById("logs");
+      const locationSection = document.getElementById("location");
+
+      headerSection.innerHTML = `<a id="avatar" aria-label="Amirhossein" target="_blank" href="${URL}"><img src="./image.jpg" alt="${NAME}'s picture" /></a>'s Health Check`;
+      locationSection.innerText = CURRENT_LOCATION;
+
+      const dateOption = {
+        timeZone: "Asia/Tehran",
+        timeZoneName: "long",
+      };
+
+      logsSection.innerHTML = logs
+        .reverse()
+        .map(({time, text, location}) => {
+          const formattedDate =
+            time.toDateString() +
+            " " +
+            time.toTimeString().split(" ")[0] +
+            " (" +
+            new Intl.DateTimeFormat("en-US", dateOption)
+              .formatToParts(time)
+              .find((part) => part.type === "timeZoneName").value +
+            ")";
+
+          return `<li><span class="date">${location || Locations.Tehran}</span><br><span class="date">${formattedDate}</span><br>${text || "I'm alive."}</li>`;
+        })
+        .join("");
+    </script>
+  </body>
+</html>
